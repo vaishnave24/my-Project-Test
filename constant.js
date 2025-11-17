@@ -9,7 +9,7 @@ module.exports = {
     BAD_REQUEST: 400,
     UNAUTHORIZED: 401,
     FORBIDDEN_Forbidden: 403,
-    NOT_FOUND_Not_Found: 404,
+    NOT_FOUND: 404,
     BAD_GATEWAY: 502,
     SERVICE_UNAVAILABLE: 503,
     INTERNAL_SERVER_ERROR: 500,
