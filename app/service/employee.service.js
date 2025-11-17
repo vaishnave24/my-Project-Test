@@ -44,3 +44,50 @@ exports.getUserById = async (Id) => {
   });
   return getUser;
 };
+
+exports.updateName = async (emp_id, first_name, last_name) => {
+  console.log("emp", emp_id, first_name, last_name);
+
+  const updateData = await employee.update(
+    { first_name: first_name, last_name: last_name },
+    { where: { emp_id: emp_id } }
+  );
+  return updateData;
+};
+
+exports.findEmployeeById = async (emp_id) => {
+  const empData = await employee.findOne({
+    where: { emp_id: emp_id },
+    logging: console.log,
+  });
+
+  return empData;
+};
+
+exports.removeEmployeeById = async (emp_id) => {
+  const data = await employee.destroy({
+    where: { emp_id: emp_id },
+  });
+  return data;
+};
+
+exports.findEmployeeByPhone = async (phoneNumber) => {
+  console.log("service", phoneNumber);
+  const empData = await employee.findOne({
+    where: { phone: phoneNumber },
+    logging: console.log,
+  });
+
+  return empData;
+};
+
+exports.verifyPassword = async (dBpassword, password) => {
+  try {
+    console.log("dBpassword,password", dBpassword, password);
+
+    const passwordMatch = await bcrypt.compare(password, dBpassword);
+    return passwordMatch;
+  } catch (error) {
+    console.log("error", error);
+  }
+};
