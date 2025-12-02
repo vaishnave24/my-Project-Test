@@ -7,6 +7,7 @@ const { employeeRoutes } = require("./app/routes/employee.route");
 const { BASE_URL } = require("./constant");
 const { connectDB, sequelize } = require("./db/dbSqlConnection");
 const { mongoDbConnection } = require("./db/dbMongoDBConnection");
+const errorhandler = require("./app/middelware/errorHandler");
 
 require("dotenv").config();
 
@@ -22,6 +23,7 @@ app.use(cors()); // allows cors origins
 // routes
 app.use(`${BASE_URL}`, userRoute);
 app.use(`${BASE_URL}`, employeeRoutes);
+app.use(errorhandler)
 
 const PORT = process.env.PORT || 8080;
 
