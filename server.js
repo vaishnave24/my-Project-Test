@@ -8,6 +8,11 @@ const { BASE_URL } = require("./constant");
 const { connectDB, sequelize } = require("./db/dbSqlConnection");
 const { mongoDbConnection } = require("./db/dbMongoDBConnection");
 const errorhandler = require("./app/middelware/errorHandler");
+const adminRoute = require("./app/routes/admin.route");
+const authRoute = require("./app/routes/auth.route");
+const { jwtVerify } = require("./app/utils/verifyToken");
+const { checkRole } = require("./app/utils/roleBasedAuth");
+const constant = require("./constant");
 
 require("dotenv").config();
 
@@ -21,8 +26,11 @@ app.use(cookieParser()); // parses cookies from incoming http request
 app.use(cors()); // allows cors origins
 
 // routes
+app.use(`${BASE_URL}`,authRoute.authRoutes);
+app.use(jwtVerify);
 app.use(`${BASE_URL}`, userRoute);
-app.use(`${BASE_URL}`, employeeRoutes);
+app.use(`${BASE_URL}`,checkRole(constant.ROLE.ADMIN), employeeRoutes);
+app.use(adminRoute)
 app.use(errorhandler)
 
 const PORT = process.env.PORT || 8080;
