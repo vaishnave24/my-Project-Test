@@ -1,5 +1,8 @@
 module.exports = {
   BASE_URL: "/app/v1",
+  ROLE:{
+    ADMIN:1,
+  },
   STATUSCODES: {
     ok: 200, //ok
     CREATED: 201, //Created

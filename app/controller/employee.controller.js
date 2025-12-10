@@ -10,7 +10,7 @@ const {
   checkUserPassword,
   verifyPassword,
 } = require("../service/employee.service");
-const { generateToken } = require("../utils/generateToken");
+const { generateToken, generatedToken } = require("../utils/generateToken");
 
 //register employee
 exports.registerEmployee = async (req, res) => {
@@ -104,6 +104,7 @@ exports.updateEmployee = async (req, res) => {
 //delete employee by id
 exports.deleteEmployeeById = async (req, res) => {
   try {
+    console.log("req",req)
     const { emp_id } = req.body;
     const response = await findEmployeeById(emp_id);
 
@@ -115,7 +116,7 @@ exports.deleteEmployeeById = async (req, res) => {
       });
     }
 
-    const deleteData = await removeEmployeeById(emp_id);
+    // const deleteData = await removeEmployeeById(emp_id);
     return res.status(STATUSCODES.ok).json({
       message: "Employee deleted successfully",
       statusCode: STATUSCODES.ok,
@@ -149,8 +150,8 @@ exports.loginEmployee = async (req, res) => {
   }
 
   const data = await verifyPassword(response.password, password);
-  console.log("data",data);
-  
+  console.log("data", data);
+
   if (!data) {
     return res.status(STATUSCODES.UNAUTHORIZED).json({
       message: "Invalid Username or Password",
@@ -171,4 +172,48 @@ exports.loginEmployee = async (req, res) => {
     res: data,
     generatedToken,
   });
+};
+
+exports.uploadFiledUsingMulter = async (req, res) => {};
+
+exports.loginUser = async (req, res) => {
+  const { phoneNumber, password } = req.body;
+
+  try {
+    if (!phoneNumber || !password) {
+      return res.status(STATUSCODES.BAD_REQUEST).json({
+        message: "Phone number and password are required",
+        statusCode: STATUSCODES.BAD_REQUEST,
+      });
+    }
+  
+    const response = await findEmployeeByPhone(phoneNumber);
+    if (!response) {
+      return res.status(STATUSCODES.NOT_FOUND).json({
+        message: `Employee with  ${phoneNumber} is not found`,
+        statusCode: STATUSCODES.NOT_FOUND,
+      });
+    }
+  
+    const data = await verifyPassword(response.password, password);
+    if (!data) {
+      return res.status(STATUSCODES.UNAUTHORIZED).json({
+        message: "Invalid Username or Password",
+        statusCode: STATUSCODES.UNAUTHORIZED,
+      });
+    }
+  
+    const token = generatedToken(response);
+    
+    console.log(token)
+      return res.status(STATUSCODES.ok).json({
+    message: "Login successful",
+    statusCode: STATUSCODES.ok,
+    res: response,
+    token,
+  });
+  } catch (error) {
+    console.log(error)
+   throw error(error)
+  } 
 };

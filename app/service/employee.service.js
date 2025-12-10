@@ -89,5 +89,7 @@ exports.verifyPassword = async (dBpassword, password) => {
     return passwordMatch;
   } catch (error) {
     console.log("error", error);
+    throw new Error("Invalid password");
+    
   }
 };
