@@ -13,6 +13,7 @@ const authRoute = require("./app/routes/auth.route");
 const { jwtVerify } = require("./app/utils/verifyToken");
 const { checkRole } = require("./app/utils/roleBasedAuth");
 const constant = require("./constant");
+const medicineRoute = require("./app/routes/medicine.route");
 
 require("dotenv").config();
 
@@ -29,6 +30,7 @@ app.use(cors()); // allows cors origins
 app.use(`${BASE_URL}`,authRoute.authRoutes);
 app.use(jwtVerify);
 app.use(`${BASE_URL}`, userRoute);
+app.use(medicineRoute.medicineRoutes);
 app.use(`${BASE_URL}`,checkRole(constant.ROLE.ADMIN), employeeRoutes);
 app.use(adminRoute)
 app.use(errorhandler)
