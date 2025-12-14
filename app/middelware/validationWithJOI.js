@@ -1,6 +1,7 @@
 const Joi = require("joi");
 
 const saveMedicineValidaton = Joi.object({
+  medicineId: Joi.number().required(),
   medicineName: Joi.string().min(2).required(),
   strip: Joi.number().integer().min(1).required(),
   categories: Joi.string().required(),
@@ -8,4 +9,10 @@ const saveMedicineValidaton = Joi.object({
   expiryDate: Joi.date().required(),
 });
 
-module.exports = {saveMedicineValidaton};
+const getmedicinesByIdValidation = Joi.object({
+  medicineId: Joi.number().required(),
+});
+module.exports = {
+  saveMedicineValidaton,
+  getmedicinesByIdValidation,
+};

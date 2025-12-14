@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const medicineSchema = new mongoose.Schema({
-  id: {
+  medicineId: {
     type: Number,
   },
   medicineName: {
